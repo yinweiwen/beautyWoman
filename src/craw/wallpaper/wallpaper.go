@@ -26,7 +26,10 @@ func CrawWallPaper() {
 	if _, oe := os.Stat(outputDir); os.IsNotExist(oe) {
 		os.MkdirAll(outputDir, 0777)
 	}
-	ioutil.WriteFile(path.Join(outputDir, "1.txt"), []byte("abc"), 0777)
+	testfile := path.Join(outputDir, "1.txt")
+	ioutil.WriteFile(testfile, []byte("abc"), 0777)
+	log.Println("create testfile: ", testfile)
+
 	c := colly.NewCollector(
 		// Restrict crawling to specific domains
 		colly.AllowedDomains("w.wallhaven.cc", "wallhaven.cc"),
