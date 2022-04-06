@@ -20,3 +20,10 @@ jobs:
 
     - name: Run
       run: cd src/craw && go run main.go
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+        
+      with:
+        github_token: ${{ secrets.SECRET }}         
+        publish_dir: ./src/download
