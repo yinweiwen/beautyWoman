@@ -27,7 +27,7 @@ func CrawWallPaper() {
 		os.MkdirAll(outputDir, 0777)
 	}
 	testfile := path.Join(outputDir, "1.txt")
-	ioutil.WriteFile(testfile, []byte("abc"), 0777)
+	ioutil.WriteFile(testfile, []byte("abcdef"), 0777)
 	log.Println("create testfile: ", testfile)
 
 	c := colly.NewCollector(
