@@ -59,7 +59,7 @@ func CrawWallPaper() {
 	}
 	_ = rp
 	//c.SetProxyFunc(rp)
-	c.SetProxy("http://127.0.0.1:7890")
+	//c.SetProxy("http://127.0.0.1:7890")
 
 	c.Limit(&colly.LimitRule{
 		DomainRegexp: `wallhaven\.cc`,
