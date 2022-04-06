@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"github.com/gocolly/colly/v2"
 	"github.com/gocolly/colly/v2/proxy"
+	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
 	"os"
+	"path"
 	"strings"
 	"time"
 )
@@ -24,6 +26,7 @@ func CrawWallPaper() {
 	if _, oe := os.Stat(outputDir); os.IsNotExist(oe) {
 		os.MkdirAll(outputDir, 0777)
 	}
+	ioutil.WriteFile(path.Join(outputDir, "1.txt"), []byte("abc"), 0777)
 	c := colly.NewCollector(
 		// Restrict crawling to specific domains
 		colly.AllowedDomains("w.wallhaven.cc", "wallhaven.cc"),
@@ -154,5 +157,5 @@ func CrawWallPaper() {
 	c.Wait()
 
 	log.Println("done!!!")
-	time.Sleep(30 * time.Minute)
+	//time.Sleep(30 * time.Minute)
 }
