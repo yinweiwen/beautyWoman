@@ -11,6 +11,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
     - uses: actions/checkout@v3
 
     - name: Set up Go
@@ -23,11 +26,11 @@ jobs:
       
     - uses: EndBug/add-and-commit@v9
       with:
-        add: 'src/download'
+        add: 'src/craw/download'
         author_name: yinweiwen
         commit: --signoff
         cwd: '.'
-        message: 'commit ${date}'
-        new_branch: branch-${date}
+        message: 'commit ${{ steps.date.outputs.date }}'
+        new_branch: branch-${{ steps.date.outputs.date }}
         pathspec_error_handling: ignore
         push: true
