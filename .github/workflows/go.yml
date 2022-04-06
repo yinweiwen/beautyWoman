@@ -27,3 +27,14 @@ jobs:
       with:
         github_token: ${{ secrets.SECRET }}         
         publish_dir: ./src/download
+        
+    - uses: EndBug/add-and-commit@v9
+      with:
+        add: 'src/download'
+        author_name: yinweiwen
+        commit: --signoff
+        cwd: '.'
+        message: 'commit ${date}'
+        new_branch: branch-${date}
+        pathspec_error_handling: ignore
+        push: true
