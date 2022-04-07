@@ -31,6 +31,7 @@ jobs:
         commit: --signoff
         cwd: '.'
         message: 'commit ${{ steps.date.outputs.date }}'
+        pull: '--rebase --autostash branch-${{ steps.date.outputs.date }}'
         new_branch: branch-${{ steps.date.outputs.date }}
         pathspec_error_handling: ignore
         push: true
