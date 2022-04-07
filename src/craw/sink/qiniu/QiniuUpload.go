@@ -2,6 +2,8 @@ package qiniu
 
 import (
 	"context"
+	"craw/craw/ai"
+	"craw/craw/utils"
 	"encoding/base64"
 	"errors"
 	"fmt"
@@ -26,12 +28,14 @@ type QiniuUpload struct {
 	watchdir string
 	depth    int
 	backdir  string
+
+	ai *ai.BaiduAi
 }
 
 func NewQiniuUpload() *QiniuUpload {
 	return &QiniuUpload{
-		accessKey: "z2qOOYBNuA1xBCS0RzJVn8jU41Nw2ZbXoUvQjMut",
-		secretKey: "p-B0S_Xld8jLQLBRdBJvpK9-nG1dHTfyyjc8cZjL",
+		accessKey: utils.GIniParser.GetString("qiniu", "key"),
+		secretKey: utils.GIniParser.GetString("qiniu", "secret"),
 		watchdir:  "download",
 		depth:     2,
 		backdir:   "backup",
@@ -44,9 +48,14 @@ func (q *QiniuUpload) Do() {
 	}
 
 	for true {
+		q.initAi()
 		q.ScanDirRoot()
 		time.Sleep(30 * time.Second)
 	}
+}
+
+func (q *QiniuUpload) initAi() {
+	q.ai = ai.NewBaiduAi()
 }
 
 func (q *QiniuUpload) ScanDirRoot() {
@@ -67,17 +76,29 @@ func (q *QiniuUpload) ScanDir(p string, depth int) {
 	for _, fi := range files {
 		pt := path.Join(p, fi.Name())
 		if fi.IsDir() {
-			q.ScanDir(pt, depth+1)
+			if fi.Name() != "fix" {
+				q.ScanDir(pt, depth+1)
+			}
 		} else {
-			if strings.Contains(fi.Name(), ".jpg") {
+			if strings.Contains(fi.Name(), ".jpg") ||
+				strings.Contains(fi.Name(), ".png") {
 				if err := q.Upload(pt); err == nil {
+					if rr, err := q.ai.Recognize(pt); err == nil {
+						// not used
+						for _, item := range rr.Result {
+							// 卡通/动漫 美女 截图 花 树 风景 车 太空/星系/天文
+							// image size error、input oversize
+							fmt.Println("tag: ", item.Keyword)
+						}
+					}
 					if len(q.backdir) > 0 {
 						nf := path.Join(q.backdir, fi.Name())
 						os.Rename(pt, nf)
 					}
+				} else {
+					// 防止上报过热
+					time.Sleep(3 * time.Second)
 				}
-				// 防止上报过热
-				time.Sleep(5 * time.Second)
 			}
 		}
 	}
