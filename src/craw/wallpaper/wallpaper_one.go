@@ -113,7 +113,7 @@ func CrawWallPaperInOneColly() {
 		log.Println("error:", err, r.Request.URL, string(r.Body))
 	})
 
-	index := 10
+	index := 1
 	for i := index; i < index+10; i++ {
 		a := fmt.Sprintf(url, i)
 		log.Println("visit ", a)

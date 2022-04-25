@@ -1,0 +1,15 @@
+[ai]
+key=
+secret=
+
+[qiniu]
+key=
+secret=
+
+[es]
+url=http://192.168.1.10:9200
+dzy_index=dzy_data2
+
+[dzy]
+username=jxfsyj
+password=

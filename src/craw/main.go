@@ -1,6 +1,7 @@
 package main
 
 import (
+	"craw/craw/dzy"
 	"craw/craw/sink"
 	"craw/craw/wallpaper"
 	"fmt"
@@ -22,7 +23,8 @@ func main() {
 		fmt.Println("begin work")
 		wallpaper.CrawWallPaperInOneColly()
 	})
-	wallpaper.CrawWallPaperInOneColly()
+	//wallpaper.CrawWallPaperInOneColly()
+	dzy.Craw()
 	c.Start()
 
 	fmt.Printf("[main] started in %3.2f seconds.", time.Now().Sub(startTime).Seconds())
